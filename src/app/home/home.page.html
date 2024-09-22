@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Conteggio Ore</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Ore Rimanenti per i Ragazzi</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-button (click)="creaNuovoAlunno()" expand="full">Crea Nuovo Alunno</ion-button>
+
+      <div *ngFor="let bambino of bambini" class="nome-container" style="margin-bottom: 30px;">
+        <ion-row style="width: 100%;">
+          <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around;">
+            <ion-input
+              type="text"
+              [(ngModel)]="bambino.modifiedNome"
+              [placeholder]="bambino.nome"
+              (ngModelChange)="checkNameChange(bambino)"
+              style="width: 120px; margin: 5px;"
+            ></ion-input>
+            <ion-button (click)="salvaNome(bambino)" [disabled]="!bambino.isNameModified">Salva nome</ion-button>
+            <ion-button *ngIf="bambino.id" (click)="eliminaAlunno(bambino.id)" color="danger">X</ion-button>
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around;">
+            <ion-input
+              type="number"
+              [(ngModel)]="oreDaDedurre[bambino.nome]"
+              placeholder="Ore da scalare"
+              (focus)="resetInput(oreDaDedurre, bambino.nome)"
+              style="width: 120px; background-color: aliceblue; margin: 5px;"
+            ></ion-input>
+            <ion-button (click)="deduciOre(bambino)" [disabled]="!oreDaDedurre[bambino.nome]">Scala Ore</ion-button>
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
+            <ion-input
+              type="number"
+              [(ngModel)]="oreDaAggiungere[bambino.nome]"
+              placeholder="Ore da aggiungere"
+              (focus)="resetInput(oreDaAggiungere, bambino.nome)"
+              style="width: 120px; background-color: aliceblue; margin: 5px;"
+            ></ion-input>
+            <ion-button (click)="incrementaOre(bambino)" [disabled]="!checkOreChange(bambino)">Aggiungi Ore</ion-button>
+          </ion-col>
+
+          <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around">
+            <div style="position: relative; width: 100%;">
+              <ion-progress-bar [value]="getOreFatteProgresso(bambino)" style="margin-top: 10px; height: 20px;"></ion-progress-bar>
+              <span style="position: absolute; width: 100%; text-align: center; top: 9px; left: 0; color: white;">
+                {{ getPercentualeMancante(bambino) }}%
+              </span>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <div style="display: flex; align-items: center; justify-content: space-around; width: 100%; flex-flow: wrap;">
+            <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
+              <ion-input
+                type="number"
+                [(ngModel)]="bambino.modifiedOreTotali"
+                [placeholder]="bambino.oreTotali.toString()"
+                style="width: 120px; background-color: aliceblue; margin: 5px;"
+              ></ion-input>
+              <ion-button (click)="modificaOreTotali(bambino)" [disabled]="!isOreTotaliModified(bambino)">Salva Ore Totali</ion-button>
+            </ion-col>
+            <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
+              <ion-badge style="min-width: auto; height: 30px; background-color: green; display: flex; align-items: center; justify-content: center; font-size: large;">Ore fatte: {{ bambino.oreFatte }}</ion-badge>
+              <ion-button (click)="resetOreFatte(bambino)">Reset Ore Fatte</ion-button>
+            </ion-col>
+                        
+            <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
+              <ion-badge style="min-width: auto; height: 30px; background-color: darkred; display: flex; align-items: center; justify-content: center; font-size: large;">Ore mancanti: {{ bambino.oreTotali - bambino.oreFatte }}</ion-badge>
+              <ion-button (click)="resetOreTotali(bambino)">Reset Ore Totali</ion-button>
+            </ion-col>
+            
+          </div>
+      
+        </ion-row>
+        <ion-item-divider></ion-item-divider>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

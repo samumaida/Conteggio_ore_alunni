@@ -1,0 +1,7 @@
+{
+  "name": "Conteggio-ore-studenti",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
