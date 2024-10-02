@@ -1,13 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Login</ion-title>
+    <ion-title>Registrazione</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="login()" #loginForm="ngForm">
+  <form (ngSubmit)="register()">
     <ion-item>
-      <ion-label position="floating">Utente</ion-label>
+      <ion-label position="floating">Username</ion-label>
       <ion-input type="text" [(ngModel)]="username" name="username" required></ion-input>
     </ion-item>
 
@@ -16,8 +16,6 @@
       <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
     </ion-item>
 
-    <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Login</ion-button>
-    <ion-button expand="full" (click)="register()">Registrati</ion-button>
-    <!-- <ion-button expand="full" (click)="loginWithGoogle()">Login con Google</ion-button> -->
+    <ion-button expand="full" type="submit" [disabled]="!username || !password">Registrati</ion-button>
   </form>
 </ion-content>

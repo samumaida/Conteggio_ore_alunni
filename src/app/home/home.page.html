@@ -1,6 +1,12 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Conteggio Ore</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon> <!-- Icona di logout -->
+        Logout
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -12,9 +18,10 @@
 
     <ion-card-content>
       <ion-button (click)="creaNuovoAlunno()" expand="full">Crea Nuovo Alunno</ion-button>
-
+      <!-- Visualizza i bambini -->
       <div *ngFor="let bambino of bambini" class="nome-container" style="margin-bottom: 30px;">
         <ion-row style="width: 100%;">
+          <!-- {{ 'bambino.id'+bambino.id }} -->
           <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around;">
             <ion-input
               type="text"
@@ -24,9 +31,14 @@
               style="width: 120px; margin: 5px;"
             ></ion-input>
             <ion-button (click)="salvaNome(bambino)" [disabled]="!bambino.isNameModified">Salva nome</ion-button>
-            <ion-button *ngIf="bambino.id" (click)="eliminaAlunno(bambino.id)" color="danger">X</ion-button>
+            <ion-button (click)="eliminaBambino(bambino)" color="danger">
+              Elimina
+            </ion-button>
+            <!-- <ion-button (click)="svuotaCollezioneAlunni()" color="danger">
+              Elimina Alunni Inutilizzati
+            </ion-button> -->
           </ion-col>
-
+        
           <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around;">
             <ion-input
               type="number"
@@ -37,7 +49,7 @@
             ></ion-input>
             <ion-button (click)="deduciOre(bambino)" [disabled]="!oreDaDedurre[bambino.nome]">Scala Ore</ion-button>
           </ion-col>
-
+        
           <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
             <ion-input
               type="number"
@@ -48,7 +60,7 @@
             ></ion-input>
             <ion-button (click)="incrementaOre(bambino)" [disabled]="!checkOreChange(bambino)">Aggiungi Ore</ion-button>
           </ion-col>
-
+        
           <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around">
             <div style="position: relative; width: 100%;">
               <ion-progress-bar [value]="getOreFatteProgresso(bambino)" style="margin-top: 10px; height: 20px;"></ion-progress-bar>
@@ -58,7 +70,7 @@
             </div>
           </ion-col>
         </ion-row>
-
+        
         <ion-row>
           <div style="display: flex; align-items: center; justify-content: space-around; width: 100%; flex-flow: wrap;">
             <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
@@ -74,15 +86,14 @@
               <ion-badge style="min-width: auto; height: 30px; background-color: green; display: flex; align-items: center; justify-content: center; font-size: large;">Ore fatte: {{ bambino.oreFatte }}</ion-badge>
               <ion-button (click)="resetOreFatte(bambino)">Reset Ore Fatte</ion-button>
             </ion-col>
-                        
+                      
             <ion-col size-xs="12" size-sm="12" size-md="5.5" size-l="2.5" size-xl="2.5" style="display: flex; align-items: center; margin-right: 10px; justify-content: space-around">
               <ion-badge style="min-width: auto; height: 30px; background-color: darkred; display: flex; align-items: center; justify-content: center; font-size: large;">Ore mancanti: {{ bambino.oreTotali - bambino.oreFatte }}</ion-badge>
               <ion-button (click)="resetOreTotali(bambino)">Reset Ore Totali</ion-button>
             </ion-col>
-            
           </div>
-      
         </ion-row>
+        
         <ion-item-divider></ion-item-divider>
       </div>
     </ion-card-content>

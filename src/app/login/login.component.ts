@@ -1,5 +1,9 @@
+// login.component.ts
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service'; // Assicurati di importare il tuo servizio AuthService
+import { Router } from '@angular/router'; // Importa il Router per il reindirizzamento
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AuthService } from '../auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -7,16 +11,24 @@ import { AuthService } from '../auth.service'; // Assicurati di importare il tuo
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  email: string = ''; 
+  username: string = ''; 
   password: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private afAuth: AngularFireAuth, private router: Router) { }
 
   login() {
-    this.authService.login(this.email, this.password);
+    this.authService.login(this.username, this.password)
+      .then(success => {
+        if (success) {
+          // Naviga alla pagina Home se il login ha avuto successo
+          this.router.navigate(['/home']);
+        } else {
+          console.error('Login fallito');
+        }
+      });
   }
 
-  loginWithGoogle() {
-    this.authService.loginWithGoogle();
+  register() {
+    this.authService.register(this.username, this.password);
   }
 }
