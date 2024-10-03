@@ -19,16 +19,16 @@
     <ion-card-content>
       <ion-button (click)="creaNuovoAlunno()" expand="full">Crea Nuovo Alunno</ion-button>
       <!-- Visualizza i bambini -->
-      <div *ngFor="let bambino of bambini" class="nome-container" style="margin-bottom: 30px;">
+      <div *ngFor="let bambino of bambini" class="nome-container" style="background-color: lightgrey; border-radius: 1em;">
         <ion-row style="width: 100%;">
           <!-- {{ 'bambino.id'+bambino.id }} -->
-          <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around;">
+          <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap;">
             <ion-input
               type="text"
               [(ngModel)]="bambino.modifiedNome"
               [placeholder]="bambino.nome"
               (ngModelChange)="checkNameChange(bambino)"
-              style="width: 120px; margin: 5px;"
+              style="width: 120px; margin: 5px; background-color: aliceblue; border-radius: 1em;"
             ></ion-input>
             <ion-button (click)="salvaNome(bambino)" [disabled]="!bambino.isNameModified">Salva nome</ion-button>
             <ion-button (click)="eliminaBambino(bambino)" color="danger">
@@ -45,7 +45,7 @@
               [(ngModel)]="oreDaDedurre[bambino.nome]"
               placeholder="Ore da scalare"
               (focus)="resetInput(oreDaDedurre, bambino.nome)"
-              style="width: 120px; background-color: aliceblue; margin: 5px;"
+              style="width: 120px; background-color: aliceblue; margin: 5px; border-radius: 1em;"
             ></ion-input>
             <ion-button (click)="deduciOre(bambino)" [disabled]="!oreDaDedurre[bambino.nome]">Scala Ore</ion-button>
           </ion-col>
@@ -56,14 +56,14 @@
               [(ngModel)]="oreDaAggiungere[bambino.nome]"
               placeholder="Ore da aggiungere"
               (focus)="resetInput(oreDaAggiungere, bambino.nome)"
-              style="width: 120px; background-color: aliceblue; margin: 5px;"
+              style="width: 120px; background-color: aliceblue; margin: 5px; border-radius: 1em;"
             ></ion-input>
             <ion-button (click)="incrementaOre(bambino)" [disabled]="!checkOreChange(bambino)">Aggiungi Ore</ion-button>
           </ion-col>
         
           <ion-col size-xs="12" size-sm="12" size-md="12" size-l="12" size-xl="12" style="display: flex; align-items: center; justify-content: space-around">
             <div style="position: relative; width: 100%;">
-              <ion-progress-bar [value]="getOreFatteProgresso(bambino)" style="margin-top: 10px; height: 20px;"></ion-progress-bar>
+              <ion-progress-bar [value]="getOreFatteProgresso(bambino)" style="margin-top: 10px; height: 20px; border-radius: 1em;"></ion-progress-bar>
               <span style="position: absolute; width: 100%; text-align: center; top: 9px; left: 0; color: white;">
                 {{ getPercentualeMancante(bambino) }}%
               </span>
@@ -78,7 +78,8 @@
                 type="number"
                 [(ngModel)]="bambino.modifiedOreTotali"
                 [placeholder]="bambino.oreTotali.toString()"
-                style="width: 120px; background-color: aliceblue; margin: 5px;"
+                (ngModelChange)="checkOreTotaliChange(bambino)"
+                style="width: 120px; background-color: aliceblue; margin: 5px; border-radius: 1em;"
               ></ion-input>
               <ion-button (click)="modificaOreTotali(bambino)" [disabled]="!isOreTotaliModified(bambino)">Salva Ore Totali</ion-button>
             </ion-col>
@@ -94,7 +95,7 @@
           </div>
         </ion-row>
         
-        <ion-item-divider></ion-item-divider>
+        <!-- <ion-item-divider></ion-item-divider> -->
       </div>
     </ion-card-content>
   </ion-card>

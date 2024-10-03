@@ -30,6 +30,10 @@ export class HomePage {
   oreDaAggiungere: { [key: string]: number | null | string } = {};
   oreDaDedurre: { [key: string]: number | null | string } = {}; // Aggiungi questa riga
 
+  timerNome: any;
+  timerOre: any;  // Timer per le ore totali
+
+
   constructor(private firestoreService: FirestoreService, private afAuth: AngularFireAuth, private router: Router, private firestore: AngularFirestore, private cd: ChangeDetectorRef) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
@@ -221,6 +225,17 @@ async eliminaBambino(bambino: Bambino) {
 
     checkNameChange(bambino: any) {
       bambino.isNameModified = bambino.modifiedNome !== bambino.nome;
+    
+      // Cancella il timer precedente se l'utente sta ancora digitando
+      if (this.timerNome) {
+        clearTimeout(this.timerNome);
+      }
+
+      // Imposta un nuovo timer per il salvataggio automatico
+      this.timerNome = setTimeout(() => {
+        console.log('bambino salvato')
+        this.salvaNome(bambino); // Salva il nome dopo 3 secondi di inattività
+      }, 3000); // 3000 millisecondi = 3 secondi
     }
 
     async salvaNome(bambino: Bambino) {
@@ -262,6 +277,21 @@ async eliminaBambino(bambino: Bambino) {
 
     getOreFatteProgresso(bambino: Bambino): number {
       return Math.max(0, (bambino.oreTotali - bambino.oreFatte)) / Math.max(bambino.oreTotali, 1);
+    }
+
+
+    checkOreTotaliChange(bambino: Bambino) {
+  
+      // Cancella il timer precedente se l'utente sta ancora digitando
+      if (this.timerOre) {
+        clearTimeout(this.timerOre);
+      }
+  
+      // Imposta un nuovo timer per il salvataggio automatico delle ore totali
+      this.timerOre = setTimeout(() => {
+        console.log('ore totali slavate')
+        this.modificaOreTotali(bambino); // Salva le ore totali dopo 3 secondi di inattività
+      }, 3000);
     }
 
     isOreTotaliModified(bambino: Bambino): boolean {
